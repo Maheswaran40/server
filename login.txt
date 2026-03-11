@@ -1,0 +1,52 @@
+const jwt = require("jsonwebtoken");
+const loginUser=async()=>{
+    try{
+        const{userEmail,userPassword}=req.body;
+        const user=await dataModal.findOne({userEmail});
+
+        if(!user){
+            return res.status(400).json({error:"User Not Found})
+        }
+        const isMatch=await bycript.compare(userPassword,user.userPassword)
+        if(!isMatch){
+            return res.status(400).json({error:"Invalid} password")
+        }
+        const token=jwt.sign(
+            {id:user._id},"mySecretKey",{expiresIn:"1h}
+        );
+        res.cookie("token",token,{
+            httpOnly:true,
+            secure:false,
+            samesite:"lax",
+            maxAge:60*60*1000
+        })
+        res.status(200).json({message:"Login successfully",user:{
+            id:user_id,name:user.userName,email:user.userEmail
+        }})
+     console.log("login success fully")
+    }
+    catch(err){
+         console.log("login failed",err.message)
+        res.status(500).send({error.message})
+    }
+}
+
+
+
+
+======== Process ========
+
+*require - jsonwebtoken
+*create function with try and catch
+*try blcok
+    *get data from body,
+    *get data from DB
+    *DB has not data show error through if condition
+    *byript compare to both password
+    *if not match show error through if condition
+    *create token through jwt sign method,includs
+        *id,secret key fromn env,expiresIn
+    *send cookie through response include
+        *httpOnly,secure,samesite, maxAge
+    *send response with json{id, email,user} should you want
+*catch block
