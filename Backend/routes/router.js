@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { addData, getData, loginUser } = require("../Controller/userDataController");
+const { addData, getData, loginUser,verifyOtp } = require("../Controller/userDataController");
 const authMiddleware = require("../middleware/auth");
 
 // 🔹 Register
 router.post("/register", addData);
-
+router.post("/verify-otp", verifyOtp);
 // 🔹 Login (POST not GET)
 router.post("/login", loginUser);
 
